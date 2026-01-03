@@ -2,18 +2,20 @@ import time
 import traci
 
 MAX_STEPS = 1000
-STEP_SLEEP = 0.1   # SAME as PPO
+STEP_SLEEP = 0.1
 
 traci.start([
     r"C:\Program Files (x86)\Eclipse\Sumo\bin\sumo-gui.exe",
-    "-c", "yournetwork.sumocfg"
+    "-c", "yournetwork.sumocfg",
+    "--start",          #  FORCE simulation start
+    #"--quit-on-end"     #  RESET cleanly after end
 ])
 
 tls = "center"
 step = 0
 
 while step < MAX_STEPS:
-    traci.trafficlight.setPhase(tls, 0)  # NS green
+    traci.trafficlight.setPhase(tls, 0) # NS green
     for _ in range(30):
         traci.simulationStep()
         time.sleep(STEP_SLEEP)
@@ -21,7 +23,7 @@ while step < MAX_STEPS:
         if step >= MAX_STEPS:
             break
 
-    traci.trafficlight.setPhase(tls, 2)  # EW green
+    traci.trafficlight.setPhase(tls, 2) # EW green
     for _ in range(30):
         traci.simulationStep()
         time.sleep(STEP_SLEEP)
